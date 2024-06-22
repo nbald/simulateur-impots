@@ -23,7 +23,7 @@ import {
 import { style, THEMES } from "./style.js";
 
 const SMIC = 1269;
-const DEFAUT_PATRIMOINE = 120000;
+const DEFAUT_PATRIMOINE = 120_000;
 
 const INIT_DATA_REVENU = {
   isSingle: true,
@@ -58,8 +58,6 @@ const INIT_DATA_HERITAGE = {
   receiverQuantity: 1,
   totalPatrimoine: DEFAUT_PATRIMOINE,
 };
-
-const INIT_IMPOTS = SimuStore.getInitialState().results;
 // Example :
 // current:    {IR: 842, CSG: 1886, total: 2728}
 // revolution: {IR: 1416, CSG: 376, total: 1792}
@@ -243,7 +241,7 @@ const ImpotsSimulation = ({ isHeritage }) => {
   const [impots, setImpots] = useState(false);
   const [impotsHeritage, setImpotsHeritage] = useState(false);
 
-  const theme = !isHeritage ? THEMES.themeDefault : THEMES.themeHeritage;
+  const theme = isHeritage ? THEMES.themeHeritage : THEMES.themeDefault;
 
   const isEmptyMateSalary =
     !isHeritage &&
@@ -316,7 +314,7 @@ const ImpotsSimulation = ({ isHeritage }) => {
 
       let percentile = SimuStore.percentageRicher(netSum, couple);
       if (percentile < 1) {
-        percentile = Math.round(percentile * 10000) / 10000;
+        percentile = Math.round(percentile * 10_000) / 10_000;
       }
 
       setImpots({ ...results, percentile });
@@ -343,8 +341,8 @@ const ImpotsSimulation = ({ isHeritage }) => {
 
   const sumRevenues =
     formDataRevenu?.salary +
-    (!formDataRevenu?.isSingle ? formDataRevenu?.mateSalary : 0);
-  const isEnormousRevenues = sumRevenues > 9000000000000000;
+    (formDataRevenu?.isSingle ? 0 : formDataRevenu?.mateSalary);
+  const isEnormousRevenues = sumRevenues > 9_000_000_000_000_000;
 
   return (
     <ThemeProvider theme={theme}>
@@ -353,77 +351,7 @@ const ImpotsSimulation = ({ isHeritage }) => {
         <Header isHeritage={isHeritage} />
         <StyledContainer>
           <CustomForm>
-            {!isHeritage ? (
-              <Fragment>
-                <div>
-                  <span>Situation familiale</span>
-                  <br />
-                  <CustomButton
-                    active={formDataRevenu.isSingle}
-                    type="button"
-                    value="single"
-                    onClick={onClickIsSingle}
-                    style={{ borderRight: 0 }}
-                  >
-                    {formDataRevenu.isSingle && "✓ "}
-                    Célibataire
-                  </CustomButton>
-                  <CustomButton
-                    active={!formDataRevenu.isSingle}
-                    type="button"
-                    value="plural"
-                    onClick={onClickIsSingle}
-                  >
-                    {!formDataRevenu.isSingle && "✓ "}
-                    Marié / Pacsé
-                  </CustomButton>
-                </div>
-                <div style={{ flex: 1 }}>
-                  <span>
-                    Votre salaire <i>net mensuel</i>
-                  </span>
-                  <br />
-                  <BlockInput>
-                    <CustomInput
-                      name="salary"
-                      value={prettyNumber(formDataRevenu.salary)}
-                      onChange={onChangeInput}
-                      onFocus={selectOnFocus}
-                    />
-                    <span>€ net / mois</span>
-                  </BlockInput>
-                </div>
-                {!formDataRevenu.isSingle && (
-                  <div style={{ flex: 1 }}>
-                    <span>Salaire de votre partenaire</span>
-                    <br />
-                    <BlockInput>
-                      <CustomInput
-                        name="mateSalary"
-                        value={prettyNumber(formDataRevenu.mateSalary)}
-                        onChange={onChangeInput}
-                        onFocus={selectOnFocus}
-                      />
-                      <span>€ net / mois</span>
-                    </BlockInput>
-                  </div>
-                )}
-                <StyledChildren>
-                  <span>Enfants à charge</span>
-                  <br />
-                  <div>
-                    <CustomInput
-                      type="number"
-                      name="children"
-                      value={prettyNumber(formDataRevenu.children)}
-                      onChange={onChangeInput}
-                      onFocus={selectOnFocus}
-                      style={{ textAlign: "right" }}
-                    />
-                  </div>
-                </StyledChildren>
-              </Fragment>
-            ) : (
+            {isHeritage ? (
               <Fragment>
                 <BlockSelect>
                   <span>Situation familiale</span>
@@ -495,6 +423,76 @@ const ImpotsSimulation = ({ isHeritage }) => {
                   </i>
                 </div>
               </Fragment>
+            ) : (
+              <Fragment>
+                <div>
+                  <span>Situation familiale</span>
+                  <br />
+                  <CustomButton
+                    active={formDataRevenu.isSingle}
+                    type="button"
+                    value="single"
+                    onClick={onClickIsSingle}
+                    style={{ borderRight: 0 }}
+                  >
+                    {formDataRevenu.isSingle && "✓ "}
+                    Célibataire
+                  </CustomButton>
+                  <CustomButton
+                    active={!formDataRevenu.isSingle}
+                    type="button"
+                    value="plural"
+                    onClick={onClickIsSingle}
+                  >
+                    {!formDataRevenu.isSingle && "✓ "}
+                    Marié / Pacsé
+                  </CustomButton>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <span>
+                    Votre salaire <i>net mensuel</i>
+                  </span>
+                  <br />
+                  <BlockInput>
+                    <CustomInput
+                      name="salary"
+                      value={prettyNumber(formDataRevenu.salary)}
+                      onChange={onChangeInput}
+                      onFocus={selectOnFocus}
+                    />
+                    <span>€ net / mois</span>
+                  </BlockInput>
+                </div>
+                {!formDataRevenu.isSingle && (
+                  <div style={{ flex: 1 }}>
+                    <span>Salaire de votre partenaire</span>
+                    <br />
+                    <BlockInput>
+                      <CustomInput
+                        name="mateSalary"
+                        value={prettyNumber(formDataRevenu.mateSalary)}
+                        onChange={onChangeInput}
+                        onFocus={selectOnFocus}
+                      />
+                      <span>€ net / mois</span>
+                    </BlockInput>
+                  </div>
+                )}
+                <StyledChildren>
+                  <span>Enfants à charge</span>
+                  <br />
+                  <div>
+                    <CustomInput
+                      type="number"
+                      name="children"
+                      value={prettyNumber(formDataRevenu.children)}
+                      onChange={onChangeInput}
+                      onFocus={selectOnFocus}
+                      style={{ textAlign: "right" }}
+                    />
+                  </div>
+                </StyledChildren>
+              </Fragment>
             )}
           </CustomForm>
 
@@ -522,14 +520,14 @@ const ImpotsSimulation = ({ isHeritage }) => {
 
           {!!impotsHeritage && <HeritageResults {...impotsHeritage} />}
 
-          {!isHeritage
-            ? !!impots && !isEmptyMateSalary && <Details impots={impots} />
-            : !!impotsHeritage && (
+          {isHeritage
+            ? !!impotsHeritage && (
                 <Fragment>
                   <Details impots={impotsHeritage} isHeritage />
                   <Spacer />
                 </Fragment>
-              )}
+              )
+            : !!impots && !isEmptyMateSalary && <Details impots={impots} />}
         </StyledContainer>
         {isHeritage && (
           <ShareBlock
@@ -538,7 +536,9 @@ const ImpotsSimulation = ({ isHeritage }) => {
           />
         )}
 
-        {!isHeritage ? (
+        {isHeritage ? (
+          <HowItWorks isHeritage={isHeritage} />
+        ) : (
           <Fragment>
             <HowItWorksRevenu />
             <ShareBlock
@@ -547,8 +547,6 @@ const ImpotsSimulation = ({ isHeritage }) => {
             />
             <AProposRevenu />
           </Fragment>
-        ) : (
-          <HowItWorks isHeritage={isHeritage} />
         )}
 
         <Footer isHeritage={isHeritage} />

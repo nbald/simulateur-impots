@@ -391,12 +391,10 @@ const GraphContainer = styled.div`
 `;
 
 export const LessImpotsResults = ({ impots, isHeritage }) => {
-  const refAmountBlock = useRef(null);
   const refFullAmountBlock = useRef(null);
   const refLessAmountBlock = useRef(null);
   const refContainerLessAmount = useRef(null);
 
-  const currentTotal = isHeritage ? impots.current : impots.current.total;
   const nextTotal = isHeritage ? impots.next : impots.revolution.total;
   const new_IR = impots.revolution?.IR;
 
@@ -547,7 +545,7 @@ export const MoreImpotsResults = ({ impots, isHeritage, formData }) => {
   const isCouple = formData ? !formData.isSingle : false;
   const sumRevenues = formData?.salary + (isCouple ? formData?.mateSalary : 0);
 
-  const isEnormousRevenues = sumRevenues > 9000000000000000;
+  const isEnormousRevenues = sumRevenues > 9_000_000_000_000_000;
 
   return (
     <BlockMoreImpots>
@@ -590,8 +588,8 @@ export const MoreImpotsResults = ({ impots, isHeritage, formData }) => {
                   {prettyNumber(Math.abs(gain / 12))}&nbsp;€ de plus par mois
                 </strong>
                 soit&nbsp;
-                {Math.round((Math.abs(gain / 12) / sumRevenues) * 10000) / 100}%
-                de plus sur votre revenu
+                {Math.round((Math.abs(gain / 12) / sumRevenues) * 10_000) / 100}
+                % de plus sur votre revenu
               </Fragment>
             )}
           </Fragment>
@@ -696,15 +694,15 @@ const PriceLine = ({ text, price, isRevolution, squareColor }) => (
 );
 
 const NewTotal = ({ impots, isRevolution }) => {
-  const IR = !isRevolution ? impots.current.IR : impots.revolution.IR;
-  const CSG = !isRevolution ? impots.current.CSG : impots.revolution.CSG;
+  const IR = isRevolution ? impots.revolution.IR : impots.current.IR;
+  const CSG = isRevolution ? impots.revolution.CSG : impots.current.CSG;
 
   return (
     <StyledTotal isRevolution={isRevolution}>
       <StyledLabel isRevolution={isRevolution}>
-        {!isRevolution
-          ? "Votre imposition actuelle"
-          : "Avec la révolution fiscale"}
+        {isRevolution
+          ? "Avec la révolution fiscale"
+          : "Votre imposition actuelle"}
       </StyledLabel>
 
       <Spacer size="8px" />
@@ -730,44 +728,15 @@ const NewTotal = ({ impots, isRevolution }) => {
   );
 };
 
-const Total = ({ impots, isRevolution }) => {
-  const IR = !isRevolution ? impots.current.IR : impots.revolution.IR;
-  const CSG = !isRevolution ? impots.current.CSG : impots.revolution.CSG;
-
-  return (
-    <StyledTotal isRevolution={isRevolution}>
-      <StyledLabel isRevolution={isRevolution}>
-        {!isRevolution
-          ? "Votre imposition actuelle"
-          : "Avec la révolution fiscale"}
-      </StyledLabel>
-      <Spacer size="8px" />
-      <span>
-        {prettyNumber(IR)} € / an &nbsp;
-        <InlineBlock>impôt sur le revenu</InlineBlock>
-      </span>
-      <Spacer size="8px" />
-      <span>
-        {prettyNumber(CSG)} € / an &nbsp;
-        <InlineBlock>CSG (contribution sociale généralisée)</InlineBlock>
-      </span>
-      <Spacer size="8px" />
-      <div>
-        <strong>TOTAL : {prettyNumber(IR + CSG)} €&nbsp;/ an</strong>
-      </div>
-    </StyledTotal>
-  );
-};
-
 const TotalHeritage = ({ impots, isRevolution }) => {
-  const imposition = !isRevolution ? impots.currentTaxes : impots.nextTaxes;
+  const imposition = isRevolution ? impots.nextTaxes : impots.currentTaxes;
 
   return (
     <StyledTotal isRevolution={isRevolution}>
       <StyledLabel isRevolution={isRevolution}>
-        {!isRevolution
-          ? "Votre imposition actuelle"
-          : "Avec la révolution fiscale"}
+        {isRevolution
+          ? "Avec la révolution fiscale"
+          : "Votre imposition actuelle"}
       </StyledLabel>
       <Spacer size="8px" />
       <strong>{prettyNumber(imposition)} €&nbsp;/ an</strong>
@@ -779,15 +748,15 @@ export const Details = ({ impots, isHeritage }) => (
   <BlockDetails>
     {/* <span>Les chiffres en détails</span>
     <Spacer size="10px" /> */}
-    {!isHeritage ? (
-      <StyledDetails>
-        <NewTotal impots={impots} />
-        <NewTotal impots={impots} isRevolution={true} />
-      </StyledDetails>
-    ) : (
+    {isHeritage ? (
       <StyledDetails>
         <TotalHeritage impots={impots} />
         <TotalHeritage impots={impots} isRevolution={true} />
+      </StyledDetails>
+    ) : (
+      <StyledDetails>
+        <NewTotal impots={impots} />
+        <NewTotal impots={impots} isRevolution={true} />
       </StyledDetails>
     )}
   </BlockDetails>
