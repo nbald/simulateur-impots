@@ -483,8 +483,12 @@ const Menu = ({ isOpen, isHeritage }) => (
       ) : (
         <a href="/heritage">Simulateur d’héritage</a>
       )}
-      <a href="https://programme.lafranceinsoumise.fr">Découvrir le programme</a>
-      <a href="https://programme.lafranceinsoumise.fr/programme/livre/">Voir toutes les mesures</a>
+      <a href="https://programme.lafranceinsoumise.fr">
+        Découvrir le programme
+      </a>
+      <a href="https://programme.lafranceinsoumise.fr/programme/livre/">
+        Voir toutes les mesures
+      </a>
     </div>
   </StyledMenu>
 );
@@ -499,8 +503,13 @@ export const NavBar = ({ isHeritage }) => {
   return (
     <StyledNavBar>
       <div>
-        <a href="https://programme.lafranceinsoumise.fr">&larr; Voir tout le programme</a>
-        <a href="https://programme.lafranceinsoumise.fr" style={{ marginTop: "5px" }}>
+        <a href="https://programme.lafranceinsoumise.fr">
+          &larr; Voir tout le programme
+        </a>
+        <a
+          href="https://programme.lafranceinsoumise.fr"
+          style={{ marginTop: "5px" }}
+        >
           <img src={LOGO_PROGRAMME} alt="Logo" width="200px" />
         </a>
 
@@ -804,7 +813,10 @@ export const AProposRevenu = () => (
 
     <StyledImageAPropos>
       <Spacer />
-      <a href="https://programme.lafranceinsoumise.fr/plans/justice-fiscale/" target="_blank">
+      <a
+        href="https://programme.lafranceinsoumise.fr/plans/justice-fiscale/"
+        target="_blank"
+      >
         <img src={PHOTO_FISCALE} style={{ maxHeight: "300px" }} />
       </a>
       <Spacer />

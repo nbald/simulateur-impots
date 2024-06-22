@@ -2,14 +2,13 @@ import React, { Component } from "react";
 
 import SimuStore from "./stores/SimuStore";
 
-import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import ImpotsSimulation from "./views/impots/ImpotsSimulation.jsx";
-import Soon from "./views/impots/Soon.jsx";
 
 import "./main.css";
 
-var _token;
+let _token;
 
 class App extends Component {
   constructor() {

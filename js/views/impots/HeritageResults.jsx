@@ -291,8 +291,8 @@ export const LessHeritageResults = ({
   const bigHeritage =
     isNaN(nextHeritage) ||
     isNaN(currentHeritage) ||
-    currentHeritage > 1000000000000000 ||
-    nextHeritage > 1000000000000000;
+    currentHeritage > 1_000_000_000_000_000 ||
+    nextHeritage > 1_000_000_000_000_000;
 
   return (
     <BlockLess>
